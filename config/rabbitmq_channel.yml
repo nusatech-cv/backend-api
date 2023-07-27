@@ -1,0 +1,49 @@
+exchanges:
+  - name: mailer_exchange
+    type: direct
+    durable: false
+    auto_delete: false
+
+  - name: notification_exchange
+    type: direct
+    durable: false
+    auto_delete: false
+
+  - name: order_exchange
+    type: direct
+    durable: false
+    auto_delete: false
+
+  - name: payment_exchange
+    type: direct
+    durable: false
+    auto_delete: false
+
+queues:
+  - name: mailer_quque
+    durable: true
+    auto_delete: false
+    bindings:
+      - exchange: mailer_exchange
+        routing_key: mailer.send_email
+
+  - name: notification_queue
+    durable: true
+    auto_delete: false
+    bindings:
+      - exchange: notification_exchange
+        routing_key: notification.send_notif
+
+  - name: order_queue
+    durable: true
+    auto_delete: false
+    bindings:
+      - exchange: order_exchange
+        router_key: order.order_information
+    
+  - name: payment_queue
+    durable: true
+    auto_delete: false
+    bindings:
+      - exchange: payment_exchange
+        router_key: payment.payment_information

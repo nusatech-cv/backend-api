@@ -1,0 +1,20 @@
+default: &default
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  adapter: <%= ENV.fetch("DB_ADAPTER") %>
+  username: <%= ENV.fetch("DB_USER", "localhost") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "") %>
+  host: <%= ENV.fetch("DB_HOST") %>
+  port: <%= ENV.fetch("DB_PORT") %>
+
+development:
+  <<: *default
+  database: beautycare_development
+
+test:
+  <<: *default
+  database: beautycare_test
+  
+production:
+  <<: *default
+  database: beautycare_production

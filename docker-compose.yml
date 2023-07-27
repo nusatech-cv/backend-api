@@ -1,0 +1,51 @@
+version: '3.6'
+
+services:
+  postgis:
+    image: postgis/postgis
+    restart: always
+    volumes:
+      - postgis_data:/postgis
+    ports:
+      - "0.0.0.0:5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: 'postgres'
+
+
+  vault:
+    image: vault:1.3.0
+    restart: always
+    volumes:
+      - vault_data:/vault
+      - ../config/vault:/tmp/policies
+    command:
+      - server
+    ports:
+      - "8200:8200"
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_LOCAL_CONFIG: '{"storage": {"file": { "path": "/vault/data" }}, "listener": {"tcp":{"address": "0.0.0.0:8200","tls_disable":"1"}}}'
+      VAULT_ADDR: http://vault:8200
+    logging:
+      driver: "json-file"
+      options:
+          max-size: "50m"
+
+    rabbitmq:
+      image: "rabbitmq:3.7.6-management"
+      restart: always
+      ports:
+        - 15672:15672
+        - 5672:5672
+      volumes:
+        - rabbitmq_data:/var/lib/rabbitmq
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "50m"      
+
+volumes:
+  vault_data:
+  postgis_data:

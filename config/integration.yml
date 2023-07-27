@@ -1,0 +1,20 @@
+keychain:
+  beautycare:
+    algorithm: RS256
+    value: "<%= ENV['JWT_PUBLIC_KEY'] %>"
+
+exchanges:
+  account_system:
+    name: beautycare.events.system
+    signer: beautycare
+
+events:
+  - name: Email Login
+    key: user.email.login
+    exchange: beautycare_system
+  - name: Order Created
+    key: user.order.created
+    exchange: beautycare_system
+  - name: Order Updated
+    key: user.order.updated
+    exchange: beautycare_system
